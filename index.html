@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GRZ'TempoFit</title>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%231C1C1E'/%3E%3Crect x='10' y='4' width='4' height='4' fill='%2333FF14'/%3E%3Crect x='11' y='5' width='1' height='1' fill='black'/%3E%3Crect x='12' y='5' width='1' height='1' fill='black'/%3E%3Crect x='9' y='8' width='6' height='5' fill='%2333FF14'/%3E%3Crect x='9' y='13' width='2' height='3' fill='%2333FF14'/%3E%3Crect x='13' y='13' width='2' height='3' fill='%2333FF14'/%3E%3Crect x='7' y='8' width='2' height='2' fill='%2333FF14'/%3E%3Crect x='15' y='8' width='2' height='2' fill='%2333FF14'/%3E%3Crect x='6' y='6' width='2' height='2' fill='%2333FF14'/%3E%3Crect x='16' y='6' width='2' height='2' fill='%2333FF14'/%3E%3Crect x='4' y='5' width='2' height='2' fill='%238E8E93'/%3E%3Crect x='18' y='5' width='2' height='2' fill='%238E8E93'/%3E%3Crect x='6' y='6' width='12' height='1' fill='%238E8E93'/%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%231C1C1E'/%3E%3Crect x='10' y='4' width='4' height='4' fill='%2333FF14'/%3E%3Crect x='11' y='5' width='1' height='1' fill='black'/%3E%3Crect x='12' y='5' width='1' height='1' fill='black'/%3E%3Crect x='9' y='8' width='6' height='5' fill='%2333FF14'/%3E%3Crect x='9' y='13' width='2' height='3' fill='%2333FF14'/%3E%3Crect x='13' y='13' width='2' height='3' fill='%2333FF14'/%3E%3Crect x='7' y='8' width='2' height='2' fill='%2333FF14'/%3E%3Crect x='15' y='8' width='2' height='2' fill='%2333FF14'/%3E%3Crect x='6' y='6' width='2' height='2' fill='%2333FF14'/%3E%3Crect x='16' y='6' width='2' height='2' fill='%2333FF14'/%3E%3Crect x='4' y='5' width='2' height='2' fill='%238E8E93'/%3E%3Crect x='18' y='5' width='2' height='2' fill='%238E8E93'/%3E%3Crect x='6' y='6' width='12' height='1' fill='%238E8E93'/%3E%3C/svg%3E">
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         :root {
@@ -49,12 +57,12 @@
             background: none;
             border: none;
             padding: 0;
-            color: var(--neon-green);
+            color: var(--text-secondary); /* Gris discret */
             opacity: 1;
             transition: transform 0.2s;
         }
         
-        .settings-btn:active { transform: rotate(45deg); }
+        .settings-btn:active { transform: rotate(45deg); color: var(--neon-green); }
 
         .logo {
             font-size: 1.8rem;
@@ -416,7 +424,7 @@
             padding: 15px;
             font-weight: 600;
             border-radius: 14px;
-            margin-top: 10px;
+            margin-top: 20px;
             width: 100%;
             cursor: pointer;
         }
@@ -524,9 +532,9 @@
         <input type="number" id="setting-goal-input" placeholder="Nombre de séances" inputmode="numeric">
         <button class="btn-primary" style="margin-top: 10px;" onclick="saveSettingsGoal()">Enregistrer l'objectif</button>
         
-        <hr style="border: 0; border-top: 1px solid var(--separator); width: 100%; margin: 20px 0;">
-        
         <button class="btn-danger" onclick="resetWeeklyProgress()">Réinitialiser la progression hebdomadaire</button>
+        
+        <hr style="border: 0; border-top: 1px solid var(--separator); width: 100%; margin: 20px 0;">
         
         <button class="btn-danger-outline" onclick="deleteAllData()">Supprimer toutes les données</button>
 
