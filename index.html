@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GRZ'TempoFit</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        :root {
+            --bg-color: #000000; /* Fond noir pur pour écran OLED/iOS moderne */
+            --card-bg: #1C1C1E; /* Gris foncé iOS */
+            --neon-green: #33FF14;
+            --text-color: #FFFFFF;
+            --text-secondary: #8E8E93;
+            --separator: #38383A;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            /* Police native iOS prioritaire */
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px 20px 40px 20px; /* Padding bas pour safe area */
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* --- LOGO GRZ'TempoFit --- */
+        .app-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-top: 10px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800; /* Très gras pour le côté moderne/sérieux */
+            letter-spacing: -0.5px;
+            background: linear-gradient(90deg, #fff, #ddd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            font-style: italic; /* Légère dynamique */
+        }
+        
+        .logo span {
+            color: var(--neon-green);
+            -webkit-text-fill-color: var(--neon-green);
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--text-color);
+        }
+
+        /* Système d'écrans */
+        .screen {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            animation: fadeIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            flex: 1;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        /* Boutons style liste iOS */
+        .option-btn {
+            background-color: var(--card-bg);
+            border: none;
+            color: var(--text-color);
+            padding: 18px 20px;
+            border-radius: 14px;
+            font-size: 17px; /* Taille standard iOS */
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0; /* Géré par le gap du parent */
+        }
+
+        .option-btn:active {
+            background-color: #333333;
+        }
+
+        .option-btn span {
+            font-size: 1.4rem;
+        }
+
+        /* Inputs Texte */
+        input[type="text"] {
+            background-color: var(--card-bg);
+            border: none;
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 17px;
+            width: 100%;
+            outline: none;
+            appearance: none;
+        }
+
+        input[type="text"]:focus {
+            background-color: #2C2C2E;
+            box-shadow: 0 0 0 2px var(--neon-green);
+        }
+
+        /* INPUT TIME STYLE iOS */
+        /* On masque l'icône calendrier par défaut et on rend tout le bloc cliquable */
+        .time-input-container {
+            position: relative;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        input[type="time"] {
+            background: transparent;
+            border: none;
+            color: var(--neon-green);
+            font-size: 22px;
+            font-weight: 600;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            width: 100%;
+            text-align: right;
+            padding: 0;
+            margin: 0;
+            display: block;
+        }
+
+        /* Hack pour forcer le look texte sur iOS et virer les icônes moches */
+        input[type="time"]::-webkit-calendar-picker-indicator {
+            background: transparent;
+            bottom: 0;
+            color: transparent;
+            cursor: pointer;
+            height: auto;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: auto;
+        }
+
+        /* Carte */
+        #map {
+            height: 250px;
+            width: 100%;
+            border-radius: 14px;
+            margin-bottom: 10px;
+            z-index: 1;
+        }
+
+        /* Boutons d'action */
+        .actions {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-bottom: 10px;
+        }
+
+        .btn-primary {
+            background-color: var(--neon-green);
+            color: #000;
+            border: none;
+            padding: 18px;
+            border-radius: 14px; /* Plus carré comme les nouveaux boutons iOS */
+            font-weight: 700;
+            font-size: 17px;
+            width: 100%;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn-primary:active {
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--neon-green);
+            border: none;
+            padding: 15px;
+            font-weight: 500;
+            font-size: 17px;
+            width: 100%;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        /* Recap Card */
+        .recap-card {
+            background-color: var(--card-bg);
+            padding: 24px;
+            border-radius: 18px;
+            margin-bottom: 20px;
+        }
+
+        .recap-line {
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--separator);
+            padding-bottom: 15px;
+        }
+        
+        .recap-line:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .recap-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .recap-value {
+            font-size: 18px;
+            color: white;
+            font-weight: 500;
+        }
+
+        .hidden { display: none !important; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-header">
+        <div class="logo">GRZ'<span>TempoFit</span></div>
+    </div>
+
+    <div id="screen-sport-type" class="screen active">
+        <h2 style="text-align: left; margin-left: 5px;">Nouvelle Séance</h2>
+        <button class="option-btn" onclick="selectSport('muscu')">
+            Séance de muscu <span>🏋️‍♂️</span>
+        </button>
+        <button class="option-btn" onclick="alert('Fonctionnalité Running à venir !')">
+            Séance running <span>🏃‍♂️</span>
+        </button>
+    </div>
+
+    <div id="screen-muscu-type" class="screen">
+        <h2>Quel groupe musculaire ?</h2>
+        
+        <button class="option-btn" onclick="selectRoutine('Biceps + Triceps 💪')">
+            Biceps + Triceps <span>💪</span>
+        </button>
+        <button class="option-btn" onclick="selectRoutine('Pecs, dos, épaules + DC 🏋️‍♂️')">
+            Pecs, dos, épaules + DC <span>🏋️‍♂️</span>
+        </button>
+        <button class="option-btn" onclick="selectRoutine('Cardio/fonctionnel 🏃‍♂️')">
+            Cardio/fonctionnel <span>🏃‍♂️</span>
+        </button>
+        <button class="option-btn" onclick="selectRoutine('Jambes 🦵')">
+            Jambes <span>🦵</span>
+        </button>
+        <button class="option-btn" onclick="showManualRoutineInput()">
+            Saisie manuelle <span>📝</span>
+        </button>
+
+        <div id="manual-routine-container" class="hidden" style="margin-top:10px">
+            <input type="text" id="manual-routine-input" placeholder="Ex: Abdos + Rappel dos" autofocus>
+            <button class="btn-primary" style="margin-top:10px" onclick="submitManualRoutine()">Valider</button>
+        </div>
+
+        <div class="actions">
+            <button class="btn-secondary" onclick="goToScreen('screen-sport-type')">Retour</button>
+        </div>
+    </div>
+
+    <div id="screen-location" class="screen">
+        <h2 id="location-title">Localisation...</h2>
+        
+        <div id="map"></div>
+        <input type="text" id="location-input" placeholder="Adresse ou nom de la salle">
+        
+        <div class="actions">
+            <button class="btn-primary" onclick="confirmLocation()">Confirmer le lieu</button>
+            <button class="btn-secondary" onclick="enableManualLocation()">Non, saisir manuellement</button>
+            <button class="btn-secondary" style="font-size:14px; color: #666;" onclick="goToScreen('screen-muscu-type')">Retour</button>
+        </div>
+    </div>
+
+    <div id="screen-time" class="screen">
+        <h2>Horaires de la séance</h2>
+        
+        <div class="time-input-container">
+            <span style="font-size:17px; color:white;">Début</span>
+            <input type="time" id="start-time">
+        </div>
+        
+        <div class="time-input-container">
+            <span style="font-size:17px; color:white;">Fin</span>
+            <input type="time" id="end-time">
+        </div>
+
+        <div class="actions">
+            <button class="btn-primary" onclick="goToRecap()">Voir le récapitulatif</button>
+            <button class="btn-secondary" onclick="goToScreen('screen-location')">Retour</button>
+        </div>
+    </div>
+
+    <div id="screen-recap" class="screen">
+        <h2>Confirmation</h2>
+        
+        <div class="recap-card">
+            <div class="recap-line">
+                <div class="recap-label">Activité</div>
+                <div class="recap-value" id="recap-desc">...</div>
+            </div>
+            <div class="recap-line">
+                <div class="recap-label">Lieu</div>
+                <div class="recap-value" id="recap-location">...</div>
+            </div>
+            <div class="recap-line">
+                <div class="recap-label">Créneau</div>
+                <div class="recap-value" id="recap-time" style="color: var(--neon-green)">...</div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn-primary" onclick="generateICS()">Ajouter au calendrier 📅</button>
+            <button class="btn-secondary" onclick="goToScreen('screen-time')">Modifier</button>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        // State
+        const state = {
+            sportType: '',
+            routine: '',
+            locationName: '',
+            locationAddress: '',
+            startTime: '',
+            endTime: ''
+        };
+
+        let map, marker;
+
+        // Navigation
+        function goToScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            
+            if (screenId === 'screen-location' && !map) {
+                // Petit délai pour laisser le temps au CSS de s'afficher avant de charger la map
+                setTimeout(initMap, 100);
+            }
+        }
+
+        // Écran 1
+        function selectSport(type) {
+            state.sportType = type;
+            if (type === 'muscu') goToScreen('screen-muscu-type');
+        }
+
+        // Écran 2
+        function selectRoutine(routine) {
+            state.routine = routine;
+            goToScreen('screen-location');
+        }
+
+        function showManualRoutineInput() {
+            document.getElementById('manual-routine-container').classList.remove('hidden');
+        }
+
+        function submitManualRoutine() {
+            const val = document.getElementById('manual-routine-input').value;
+            if (val) {
+                state.routine = val + ' 📝';
+                goToScreen('screen-location');
+            }
+        }
+
+        // Écran 3 : Map
+        function initMap() {
+            if(map) return; // Évite re-initialisation
+            map = L.map('map', { zoomControl: false }).setView([48.8566, 2.3522], 13);
+
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '',
+                subdomains: 'abcd',
+                maxZoom: 19
+            }).addTo(map);
+
+            const gymIcon = L.divIcon({
+                className: 'custom-div-icon',
+                html: "<div style='background-color:#33FF14;width:18px;height:18px;border-radius:50%;border:3px solid white;box-shadow:0 0 15px #33FF14'></div>",
+                iconSize: [20, 20],
+                iconAnchor: [10, 10]
+            });
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    
+                    map.setView([lat, lon], 16);
+                    if (marker) map.removeLayer(marker);
+                    marker = L.marker([lat, lon], {icon: gymIcon}).addTo(map);
+
+                    try {
+                        document.getElementById('location-title').innerText = "Recherche...";
+                        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+                        const data = await response.json();
+                        
+                        const address = data.address;
+                        const city = address.city || address.town || address.village || "";
+                        const postcode = address.postcode || "";
+                        
+                        // Création d'une adresse propre
+                        const road = address.road || "";
+                        const houseNumber = address.house_number || "";
+                        const fullAddr = `${houseNumber} ${road}, ${postcode} ${city}`.trim();
+
+                        const locationName = `Basic-Fit ${city}`; 
+
+                        document.getElementById('location-title').innerText = `Vous êtes au ${locationName} ?`;
+                        document.getElementById('location-input').value = `${locationName} (${fullAddr})`;
+                        
+                        state.locationName = locationName;
+                        state.locationAddress = fullAddr;
+
+                    } catch (e) {
+                        document.getElementById('location-title').innerText = "Localisation introuvable";
+                    }
+
+                }, () => {
+                    enableManualLocation();
+                });
+            } else {
+                enableManualLocation();
+            }
+        }
+
+        function enableManualLocation() {
+            const input = document.getElementById('location-input');
+            input.value = "";
+            input.placeholder = "Saisir nom et adresse...";
+            input.focus();
+            document.getElementById('location-title').innerText = "Où est la salle ?";
+        }
+
+        function confirmLocation() {
+            const val = document.getElementById('location-input').value;
+            if (val) {
+                if(!state.locationAddress) state.locationAddress = val;
+                
+                // Set default times
+                const now = new Date();
+                const pad = (n) => n < 10 ? '0' + n : n;
+                
+                document.getElementById('start-time').value = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+                
+                const nextHour = new Date(now.getTime() + 60*60*1000);
+                document.getElementById('end-time').value = `${pad(nextHour.getHours())}:${pad(nextHour.getMinutes())}`;
+
+                goToScreen('screen-time');
+            } else {
+                alert("Merci d'indiquer un lieu");
+            }
+        }
+
+        // Écran 4 & 5
+        function goToRecap() {
+            state.startTime = document.getElementById('start-time').value;
+            state.endTime = document.getElementById('end-time').value;
+
+            const desc = `Séance ${state.routine}`;
+            // On s'assure que le titre du Basic Fit est présent
+            const locationDisplay = state.locationName ? 
+                `${state.locationName}` : 
+                (state.locationAddress || "Basic-Fit");
+            
+            document.getElementById('recap-desc').innerText = desc;
+            document.getElementById('recap-location').innerText = locationDisplay;
+            document.getElementById('recap-time').innerText = `${state.startTime} - ${state.endTime}`;
+
+            goToScreen('screen-recap');
+        }
+
+        function generateICS() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = (now.getMonth() + 1).toString().padStart(2, '0');
+            const day = now.getDate().toString().padStart(2, '0');
+            
+            const [sh, sm] = state.startTime.split(':');
+            const [eh, em] = state.endTime.split(':');
+            
+            const dtStart = `${year}${month}${day}T${sh}${sm}00`;
+            const dtEnd = `${year}${month}${day}T${eh}${em}00`;
+
+            const summary = "Séance de sport";
+            const description = `Séance ${state.routine} au ${state.locationName || 'Basic-Fit'}`;
+            const locationField = `${state.locationName || 'Basic-Fit'}, ${state.locationAddress}`;
+
+            const icsContent = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'PRODID:-//GRZTempoFit//FR',
+                'BEGIN:VEVENT',
+                `UID:${Date.now()}@grztempofit.com`,
+                `DTSTAMP:${dtStart}Z`,
+                `DTSTART:${dtStart}`,
+                `DTEND:${dtEnd}`,
+                `SUMMARY:${summary}`,
+                `DESCRIPTION:${description}`,
+                `LOCATION:${locationField}`,
+                'BEGIN:VALARM',
+                'TRIGGER:-PT15M',
+                'ACTION:DISPLAY',
+                'DESCRIPTION:Go Sport !',
+                'END:VALARM',
+                'END:VEVENT',
+                'END:VCALENDAR'
+            ].join('\r\n');
+
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.setAttribute('download', 'seance.ics');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
