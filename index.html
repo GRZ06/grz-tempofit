@@ -41,28 +41,80 @@
             overflow-x: hidden;
         }
 
-        /* --- HEADER & SETTINGS --- */
+        /* --- HEADER & HAMBURGER --- */
         .app-header-container {
             position: relative;
             margin-bottom: 5px;
             padding-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .settings-btn {
+        .hamburger-btn {
             position: absolute;
             top: 10px;
-            right: 0;
-            font-size: 24px;
-            cursor: pointer;
+            left: 0;
             background: none;
             border: none;
-            padding: 0;
-            color: var(--text-secondary); /* Gris discret */
-            opacity: 1;
-            transition: transform 0.2s;
+            padding: 5px;
+            cursor: pointer;
+            z-index: 2000;
         }
-        
-        .settings-btn:active { transform: rotate(45deg); color: var(--neon-green); }
+
+        .hamburger-icon {
+            width: 30px;
+            height: 30px;
+            fill: var(--neon-green);
+        }
+
+        /* SIDE MENU */
+        .side-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1500;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .side-menu-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 260px;
+            height: 100%;
+            background-color: var(--card-bg);
+            border-right: 1px solid #333;
+            z-index: 1600;
+            transition: left 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            padding-top: 80px;
+        }
+        .side-menu.active { left: 0; }
+
+        .side-menu a {
+            padding: 20px 25px;
+            text-decoration: none;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-bottom: 1px solid var(--separator);
+            transition: background 0.2s;
+        }
+        .side-menu a:active {
+            background-color: #333;
+            color: var(--neon-green);
+        }
 
         .logo {
             font-size: 1.8rem;
@@ -103,197 +155,7 @@
             50% { transform: scale(1.05); }
         }
 
-        /* --- PROGRESSION SYSTEM --- */
-        .progression-container {
-            background-color: var(--card-bg);
-            border-radius: 14px;
-            padding: 15px;
-            margin-top: 25px;
-            text-align: center;
-            border: 1px solid #333;
-        }
-
-        .progression-title {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 700;
-        }
-
-        .progression-text {
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-            font-weight: 500;
-        }
-
-        .progression-highlight {
-            color: var(--neon-green);
-            font-weight: 700;
-        }
-
-        .progress-bar-bg {
-            background-color: #333;
-            height: 10px;
-            width: 100%;
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .progress-bar-fill {
-            background-color: var(--neon-green);
-            height: 100%;
-            width: 0%;
-            border-radius: 10px;
-            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 0 10px var(--neon-green);
-        }
-
-        .set-goal-btn {
-            background: none;
-            border: 1px dashed var(--text-secondary);
-            color: var(--text-secondary);
-            padding: 10px;
-            border-radius: 10px;
-            width: 100%;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-
-        /* --- YEARLY STATS --- */
-        .stats-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-            background-color: transparent;
-            padding: 10px 0;
-        }
-
-        .stat-box {
-            flex: 1;
-            text-align: center;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .stat-number {
-            font-size: 2.2rem;
-            font-weight: 600;
-            color: var(--neon-green);
-            font-family: -apple-system, sans-serif;
-        }
-
-        .stat-icon {
-            font-size: 1.8rem;
-        }
-
-        .stat-separator {
-            width: 2px;
-            height: 40px;
-            background-color: var(--text-secondary); 
-            opacity: 0.5;
-            border-radius: 2px;
-        }
-        
-        .stats-label {
-            width: 100%;
-            text-align: center;
-            font-size: 1rem;
-            color: white;
-            margin-bottom: 10px;
-            margin-top: 10px;
-            font-weight: 500;
-        }
-
-        /* --- WEEKLY CALENDAR --- */
-        .calendar-container {
-            margin-top: auto; 
-            padding-top: 20px;
-            width: 100%;
-        }
-
-        .calendar-title {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-            text-align: left;
-            margin-left: 5px;
-        }
-
-        .calendar-row {
-            display: flex;
-            justify-content: space-between;
-            background-color: var(--card-bg);
-            border-radius: 14px;
-            padding: 15px;
-        }
-
-        .calendar-day {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-            flex: 1;
-        }
-
-        .day-name {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            font-weight: 600;
-        }
-
-        .day-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: #333; 
-            transition: all 0.3s;
-        }
-
-        .day-dot.active {
-            background-color: var(--neon-green);
-            box-shadow: 0 0 8px var(--neon-green);
-        }
-
-        /* --- RUNNING CITY DISPLAY --- */
-        .city-display-container {
-            text-align: center;
-            margin-top: 30px;
-            margin-bottom: 30px;
-        }
-        
-        .city-label {
-            font-size: 1.1rem;
-            color: var(--text-color);
-            margin-bottom: 10px;
-        }
-
-        .city-name {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--neon-green);
-            text-transform: capitalize; 
-            text-shadow: 0 0 15px rgba(51, 255, 20, 0.3);
-            line-height: 1.1;
-        }
-
         /* --- COMMON UI --- */
-        h2 {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            text-align: center;
-            color: var(--text-color);
-        }
-
         .screen {
             display: none;
             flex-direction: column;
@@ -301,7 +163,6 @@
             animation: fadeIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
             flex: 1;
         }
-
         .screen.active { display: flex; }
 
         .option-btn {
@@ -322,7 +183,7 @@
         .option-btn:active { background-color: #333; }
         .option-btn span { font-size: 1.4rem; }
 
-        input[type="text"], input[type="number"] {
+        input[type="text"], input[type="number"], input[type="date"], input[type="time"] {
             background-color: var(--card-bg);
             border: none;
             color: white;
@@ -331,6 +192,13 @@
             font-size: 17px;
             width: 100%;
             outline: none;
+            font-family: -apple-system, sans-serif;
+        }
+        
+        input[type="date"], input[type="time"] {
+            appearance: none;
+            -webkit-appearance: none;
+            display: block;
         }
 
         input:focus { box-shadow: 0 0 0 2px var(--neon-green); }
@@ -342,134 +210,138 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-        }
-        input[type="time"] {
-            background: transparent;
-            border: none;
-            color: var(--neon-green);
-            font-size: 22px;
-            font-weight: 600;
-            font-family: -apple-system, sans-serif;
-            outline: none;
-            appearance: none;
-            -webkit-appearance: none;
-            width: 100%;
-            text-align: right;
-            padding: 0;
-            margin: 0;
-        }
-
-        #map {
-            height: 250px;
-            width: 100%;
-            border-radius: 14px;
             margin-bottom: 10px;
-            z-index: 1;
         }
+        .time-input-container span { font-size: 17px; color: white; }
+        .time-input-container input { background: transparent; text-align: right; width: 60%; padding: 0; font-weight: 600; color: var(--neon-green); }
 
-        .actions {
-            margin-top: auto;
+        /* --- HISTORY LIST --- */
+        .history-list {
             display: flex;
             flex-direction: column;
             gap: 12px;
-            padding-bottom: 10px;
-        }
-        
-        .btn-primary {
-            background-color: var(--neon-green);
-            color: #000;
-            border: none;
-            padding: 18px;
-            border-radius: 14px;
-            font-weight: 700;
-            font-size: 17px;
-            width: 100%;
-            cursor: pointer;
+            overflow-y: auto;
+            max-height: 70vh;
         }
 
-        .btn-back {
-            background-color: transparent;
-            color: var(--neon-green);
-            border: 2px solid var(--neon-green);
-            padding: 18px;
-            border-radius: 14px;
-            font-weight: 700;
-            font-size: 17px;
-            width: 100%;
-            cursor: pointer;
-            text-align: center;
-        }
-        
-        .btn-back:active {
-            background-color: rgba(51, 255, 20, 0.1);
-        }
-
-        .btn-secondary {
+        .history-item {
             background-color: var(--card-bg);
+            border-radius: 14px;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .h-left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 60px;
+            border-right: 1px solid #333;
+            padding-right: 10px;
+            margin-right: 15px;
+        }
+
+        .h-emoji { font-size: 24px; margin-bottom: 4px; }
+        .h-duration { font-size: 12px; color: var(--text-secondary); font-weight: 600; }
+
+        .h-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .h-type { font-size: 15px; font-weight: 600; color: white; margin-bottom: 4px; }
+        .h-date { font-size: 13px; color: var(--neon-green); }
+
+        /* Delete Button */
+        .delete-btn-small {
+            background: none;
+            border: none;
+            color: var(--danger);
+            font-size: 16px;
+            padding: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .empty-history {
+            text-align: center;
             color: var(--text-secondary);
-            border: none;
-            padding: 18px;
-            border-radius: 14px;
-            font-weight: 500;
-            font-size: 17px;
-            width: 100%;
-            cursor: pointer;
-            text-align: center;
+            margin-top: 40px;
+            font-style: italic;
         }
 
-        .btn-danger {
-            background-color: rgba(255, 69, 58, 0.1);
-            color: var(--danger);
-            border: none;
-            padding: 15px;
-            font-weight: 600;
-            border-radius: 14px;
-            margin-top: 20px;
-            width: 100%;
-            cursor: pointer;
-        }
+        /* --- STATS & PROG --- */
+        .progression-container { background-color: var(--card-bg); border-radius: 14px; padding: 15px; margin-top: 25px; text-align: center; border: 1px solid #333; }
+        .progression-title { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+        .progression-text { font-size: 1.1rem; margin-bottom: 10px; font-weight: 500; }
+        .progression-highlight { color: var(--neon-green); font-weight: 700; }
+        .progress-bar-bg { background-color: #333; height: 10px; width: 100%; border-radius: 10px; overflow: hidden; }
+        .progress-bar-fill { background-color: var(--neon-green); height: 100%; width: 0%; border-radius: 10px; transition: width 0.5s; box-shadow: 0 0 10px var(--neon-green); }
+        .set-goal-btn { background: none; border: 1px dashed var(--text-secondary); color: var(--text-secondary); padding: 10px; border-radius: 10px; width: 100%; cursor: pointer; margin-top: 20px; }
 
-        .btn-danger-outline {
-            background-color: transparent;
-            color: var(--danger);
-            border: 1px solid var(--danger);
-            padding: 15px;
-            font-weight: 600;
-            border-radius: 14px;
-            margin-top: 20px;
-            width: 100%;
-            cursor: pointer;
-        }
+        .stats-container { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding: 10px 0; }
+        .stat-box { flex: 1; text-align: center; display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 10px; }
+        .stat-number { font-size: 2.2rem; font-weight: 600; color: var(--neon-green); }
+        .stat-icon { font-size: 1.8rem; }
+        .stat-separator { width: 2px; height: 40px; background-color: var(--text-secondary); opacity: 0.5; }
+        .stats-label { width: 100%; text-align: center; font-size: 1rem; color: white; margin-bottom: 10px; margin-top: 10px; font-weight: 500; }
 
-        .recap-card {
-            background-color: var(--card-bg);
-            padding: 24px;
-            border-radius: 18px;
-            margin-bottom: 20px;
-        }
-        .recap-line {
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--separator);
-            padding-bottom: 15px;
-        }
+        .calendar-container { margin-top: auto; padding-top: 20px; width: 100%; }
+        .calendar-title { font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; margin-left: 5px; }
+        .calendar-row { display: flex; justify-content: space-between; background-color: var(--card-bg); border-radius: 14px; padding: 15px; }
+        .calendar-day { display: flex; flex-direction: column; align-items: center; gap: 5px; flex: 1; }
+        .day-name { font-size: 0.9rem; color: var(--text-secondary); font-weight: 600; }
+        .day-dot { width: 8px; height: 8px; border-radius: 50%; background-color: #333; transition: all 0.3s; }
+        .day-dot.active { background-color: var(--neon-green); box-shadow: 0 0 8px var(--neon-green); }
+
+        /* --- BUTTONS --- */
+        .actions { margin-top: auto; display: flex; flex-direction: column; gap: 12px; padding-bottom: 10px; }
+        .btn-primary { background-color: var(--neon-green); color: #000; border: none; padding: 18px; border-radius: 14px; font-weight: 700; font-size: 17px; width: 100%; cursor: pointer; }
+        .btn-back { background-color: transparent; color: var(--neon-green); border: 2px solid var(--neon-green); padding: 18px; border-radius: 14px; font-weight: 700; font-size: 17px; width: 100%; cursor: pointer; text-align: center; }
+        .btn-back:active { background-color: rgba(51, 255, 20, 0.1); }
+        .btn-secondary { background-color: var(--card-bg); color: var(--text-secondary); border: none; padding: 18px; border-radius: 14px; font-weight: 500; font-size: 17px; width: 100%; cursor: pointer; }
+        .btn-danger { background-color: rgba(255, 69, 58, 0.1); color: var(--danger); border: none; padding: 15px; font-weight: 600; border-radius: 14px; margin-top: 20px; width: 100%; cursor: pointer; }
+        .btn-danger-outline { background-color: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 15px; font-weight: 600; border-radius: 14px; margin-top: 20px; width: 100%; cursor: pointer; }
+
+        /* MAP */
+        #map { height: 250px; width: 100%; border-radius: 14px; margin-bottom: 10px; z-index: 1; }
+        .hidden { display: none !important; }
+        
+        .city-display-container { text-align: center; margin-top: 30px; margin-bottom: 30px; }
+        .city-label { font-size: 1.1rem; color: var(--text-color); margin-bottom: 10px; }
+        .city-name { font-size: 2.5rem; font-weight: 800; color: var(--neon-green); text-transform: capitalize; text-shadow: 0 0 15px rgba(51, 255, 20, 0.3); line-height: 1.1; }
+        
+        .recap-card { background-color: var(--card-bg); padding: 24px; border-radius: 18px; margin-bottom: 20px; }
+        .recap-line { margin-bottom: 20px; border-bottom: 1px solid var(--separator); padding-bottom: 15px; }
         .recap-line:last-child { border-bottom: none; }
-        .recap-label {
-            font-size: 13px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
+        .recap-label { font-size: 13px; color: var(--text-secondary); text-transform: uppercase; font-weight: 600; margin-bottom: 6px; display:block; }
         .recap-value { font-size: 18px; color: white; font-weight: 500; }
 
-        .hidden { display: none !important; }
+        h2 { font-size: 1.3rem; font-weight: 600; margin-bottom: 20px; text-align: center; color: var(--text-color); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
+    <div id="side-menu-overlay" class="side-menu-overlay" onclick="toggleMenu()"></div>
+    <div id="side-menu" class="side-menu">
+        <a href="#" onclick="goToScreen('screen-sport-type'); toggleMenu()">Accueil 🏠</a>
+        <a href="#" onclick="openHistory(); toggleMenu()">Historique 📜</a>
+        <a href="#" onclick="openSettings(); toggleMenu()">Paramètres ⚙️</a>
+    </div>
+
     <div class="app-header-container">
-        <button class="settings-btn" onclick="openSettings()">⚙️</button>
+        <button class="hamburger-btn" onclick="toggleMenu()">
+            <svg class="hamburger-icon" viewBox="0 0 24 24">
+                <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+            </svg>
+        </button>
         <div class="logo">GRZ'<span>TempoFit</span></div>
     </div>
 
@@ -492,37 +364,28 @@
     </div>
 
     <div id="screen-sport-type" class="screen active">
-        
         <h2 style="text-align: left; margin-left: 5px;">Quel type de séance ?</h2>
-        
-        <button class="option-btn" onclick="selectSport('muscu')">
-            Séance de muscu <span>🏋️‍♂️</span>
-        </button>
-        <button class="option-btn" onclick="selectSport('running')">
-            Séance running <span>🏃‍♂️</span>
-        </button>
-
+        <button class="option-btn" onclick="selectSport('muscu')">Séance de muscu <span>🏋️‍♂️</span></button>
+        <button class="option-btn" onclick="selectSport('running')">Séance running <span>🏃‍♂️</span></button>
         <div id="progression-wrapper"></div>
-
         <div class="stats-label">Séances réalisées au total :</div>
         <div class="stats-container">
-            <div class="stat-box">
-                <div class="stat-number" id="stat-muscu">0</div>
-                <div class="stat-icon">💪</div>
-            </div>
-            
+            <div class="stat-box"><div class="stat-number" id="stat-muscu">0</div><div class="stat-icon">💪</div></div>
             <div class="stat-separator"></div>
-            
-            <div class="stat-box">
-                <div class="stat-number" id="stat-running">0</div>
-                <div class="stat-icon">🏃‍♂️</div>
-            </div>
+            <div class="stat-box"><div class="stat-number" id="stat-running">0</div><div class="stat-icon">🏃‍♂️</div></div>
         </div>
-
         <div class="calendar-container">
             <div class="calendar-title">Cette semaine</div>
-            <div class="calendar-row" id="calendar-days">
-                </div>
+            <div class="calendar-row" id="calendar-days"></div>
+        </div>
+    </div>
+
+    <div id="screen-history" class="screen">
+        <h2>Historique des séances</h2>
+        <div id="history-list" class="history-list">
+            </div>
+        <div class="actions">
+            <button class="btn-back" onclick="goToScreen('screen-sport-type')">Retour</button>
         </div>
     </div>
 
@@ -531,13 +394,9 @@
         <label class="recap-label">Objectif hebdomadaire</label>
         <input type="number" id="setting-goal-input" placeholder="Nombre de séances" inputmode="numeric">
         <button class="btn-primary" style="margin-top: 10px;" onclick="saveSettingsGoal()">Enregistrer l'objectif</button>
-        
         <button class="btn-danger" onclick="resetWeeklyProgress()">Réinitialiser la progression hebdomadaire</button>
-        
         <hr style="border: 0; border-top: 1px solid var(--separator); width: 100%; margin: 20px 0;">
-        
         <button class="btn-danger-outline" onclick="deleteAllData()">Supprimer toutes les données</button>
-
         <div class="actions">
             <button class="btn-back" onclick="goToScreen('screen-sport-type')">Retour</button>
         </div>
@@ -545,21 +404,11 @@
 
     <div id="screen-muscu-type" class="screen">
         <h2>Quel groupe musculaire ?</h2>
-        <button class="option-btn" onclick="selectRoutine('Biceps + Triceps 💪')">
-            Biceps + Triceps <span>💪</span>
-        </button>
-        <button class="option-btn" onclick="selectRoutine('Pecs, dos, épaules + DC 🏋️‍♂️')">
-            Pecs, dos, épaules + DC <span>🏋️‍♂️</span>
-        </button>
-        <button class="option-btn" onclick="selectRoutine('Cardio/fonctionnel 🏃‍♂️')">
-            Cardio/fonctionnel <span>🏃‍♂️</span>
-        </button>
-        <button class="option-btn" onclick="selectRoutine('Jambes 🦵')">
-            Jambes <span>🦵</span>
-        </button>
-        <button class="option-btn" onclick="showManualRoutineInput()">
-            Saisie manuelle <span>📝</span>
-        </button>
+        <button class="option-btn" onclick="selectRoutine('Biceps + Triceps 💪')">Biceps + Triceps <span>💪</span></button>
+        <button class="option-btn" onclick="selectRoutine('Pecs, dos, épaules + DC 🏋️‍♂️')">Pecs, dos, épaules + DC <span>🏋️‍♂️</span></button>
+        <button class="option-btn" onclick="selectRoutine('Cardio/fonctionnel 🏃‍♂️')">Cardio/fonctionnel <span>🏃‍♂️</span></button>
+        <button class="option-btn" onclick="selectRoutine('Jambes 🦵')">Jambes <span>🦵</span></button>
+        <button class="option-btn" onclick="showManualRoutineInput()">Saisie manuelle <span>📝</span></button>
         <div id="manual-routine-container" class="hidden" style="margin-top:10px">
             <input type="text" id="manual-routine-input" placeholder="Ex: Abdos + Rappel dos" autofocus>
             <button class="btn-primary" style="margin-top:10px" onclick="submitManualRoutine()">Valider</button>
@@ -573,7 +422,6 @@
         <h2>Distance</h2>
         <label class="recap-label">Combien de kilomètres courez-vous ? 🏃‍♂️</label>
         <input type="number" id="running-km-input" placeholder="Ex: 5" inputmode="numeric" style="margin-top: 10px;">
-        
         <div class="actions">
             <button class="btn-primary" onclick="submitRunningKm()">Suivant</button>
             <button class="btn-back" onclick="goToScreen('screen-sport-type')">Retour</button>
@@ -582,12 +430,10 @@
 
     <div id="screen-location" class="screen">
         <h2 id="location-title">Recherche...</h2>
-        
         <div id="muscu-location-container">
             <div id="map"></div>
             <input type="text" id="location-input" placeholder="Recherche en cours...">
         </div>
-
         <div id="running-location-container" class="hidden">
             <div class="city-display-container">
                 <div class="city-label">Vous courez à</div>
@@ -595,7 +441,6 @@
             </div>
             <input type="text" id="running-manual-input" class="hidden" placeholder="Entrez la ville...">
         </div>
-        
         <div class="actions">
             <button class="btn-primary" onclick="confirmLocation()">Confirmer le lieu</button>
             <button class="btn-secondary" onclick="enableManualLocation()">Saisir manuellement</button>
@@ -604,13 +449,17 @@
     </div>
 
     <div id="screen-time" class="screen">
-        <h2>Horaires de la séance</h2>
+        <h2>Date et Horaires</h2>
         <div class="time-input-container">
-            <span style="font-size:17px; color:white;">Début</span>
+            <span>Date</span>
+            <input type="date" id="session-date">
+        </div>
+        <div class="time-input-container">
+            <span>Début</span>
             <input type="time" id="start-time">
         </div>
         <div class="time-input-container">
-            <span style="font-size:17px; color:white;">Fin</span>
+            <span>Fin</span>
             <input type="time" id="end-time">
         </div>
         <div class="actions">
@@ -637,7 +486,7 @@
         </div>
         <div class="actions">
             <button class="btn-primary" onclick="generateICS()">Ajouter au calendrier 📅</button>
-            <button class="btn-back" onclick="goToScreen('screen-sport-type')">Annuler</button>
+            <button class="btn-back" onclick="goToScreen('screen-time')">Annuler</button>
         </div>
     </div>
 
@@ -645,7 +494,7 @@
 
     <script>
         // --- DATA & PERSISTENCE ---
-        const storageKey = 'grz_tempofit_v2_data';
+        const storageKey = 'grz_tempofit_v3_data';
         
         let appData = { 
             goal: 0, 
@@ -653,7 +502,8 @@
             lastWeek: 0,
             totalMuscu: 0,
             totalRunning: 0,
-            sessionDates: [] 
+            sessionDates: [],
+            history: [] 
         };
 
         function getWeekNumber(d) {
@@ -666,11 +516,10 @@
         function loadData() {
             const stored = localStorage.getItem(storageKey);
             const currentWeek = getWeekNumber(new Date());
-
             if (stored) {
                 const parsed = JSON.parse(stored);
                 appData = { ...appData, ...parsed }; 
-                
+                if(!appData.history) appData.history = []; 
                 if (appData.lastWeek !== currentWeek) {
                     appData.current = 0; 
                     appData.lastWeek = currentWeek;
@@ -693,6 +542,69 @@
             renderCalendar();
         }
 
+        // --- MENU ---
+        function toggleMenu() {
+            const menu = document.getElementById('side-menu');
+            const overlay = document.getElementById('side-menu-overlay');
+            if (menu.classList.contains('active')) {
+                menu.classList.remove('active'); overlay.classList.remove('active');
+            } else {
+                menu.classList.add('active'); overlay.classList.add('active');
+            }
+        }
+
+        // --- HISTORY ---
+        function openHistory() {
+            const list = document.getElementById('history-list');
+            list.innerHTML = '';
+            if(!appData.history || appData.history.length === 0) {
+                list.innerHTML = '<div class="empty-history">Aucune séance enregistrée</div>';
+            } else {
+                // Boucle inversée pour afficher les plus récents en haut, mais on garde l'index réel 'i'
+                for (let i = appData.history.length - 1; i >= 0; i--) {
+                    const session = appData.history[i];
+                    const el = document.createElement('div');
+                    el.className = 'history-item';
+                    el.innerHTML = `
+                        <div class="h-left">
+                            <div class="h-emoji">${session.emoji || '💪'}</div>
+                            <div class="h-duration">${session.duration || '-'}</div>
+                        </div>
+                        <div class="h-right">
+                            <div class="h-type">${session.desc}</div>
+                            <div class="h-date">${formatDateFR(session.date)} à ${session.startTime}</div>
+                        </div>
+                        <button class="delete-btn-small" onclick="deleteHistoryItem(${i})">❌</button>
+                    `;
+                    list.appendChild(el);
+                }
+            }
+            goToScreen('screen-history');
+        }
+
+        function deleteHistoryItem(index) {
+            if(confirm("Supprimer cette séance de l'historique ?")) {
+                const item = appData.history[index];
+                
+                // Update stats counter
+                if(item.type === 'muscu' && appData.totalMuscu > 0) appData.totalMuscu--;
+                if(item.type === 'running' && appData.totalRunning > 0) appData.totalRunning--;
+                
+                // Remove from history
+                appData.history.splice(index, 1);
+                
+                saveData();
+                openHistory(); // Refresh view
+            }
+        }
+
+        function formatDateFR(dateStr) {
+            if(!dateStr) return "";
+            const [y, m, d] = dateStr.split('-');
+            return `${d}/${m}`;
+        }
+
+        // --- RENDER ---
         function renderProgression() {
             const container = document.getElementById('progression-wrapper');
             container.innerHTML = '';
@@ -722,21 +634,17 @@
         function renderCalendar() {
             const container = document.getElementById('calendar-days');
             container.innerHTML = '';
-            
             const d = new Date();
             const day = d.getDay(); 
             const diff = d.getDate() - day + (day == 0 ? -6:1); 
             const monday = new Date(d.setDate(diff));
-
             const daysMap = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
 
             for (let i = 0; i < 7; i++) {
                 const currentDay = new Date(monday);
                 currentDay.setDate(monday.getDate() + i);
-                
                 const isoDate = currentDay.toISOString().split('T')[0];
                 const hasSession = appData.sessionDates.includes(isoDate);
-
                 const dayHtml = `
                     <div class="calendar-day">
                         <div class="day-name">${daysMap[i]}</div>
@@ -755,22 +663,16 @@
             const val = parseInt(document.getElementById('setting-goal-input').value);
             if (val > 0) { appData.goal = val; saveData(); goToScreen('screen-sport-type'); }
         }
-
-        // --- RESET LOGIC ---
         function resetWeeklyProgress() {
             if(confirm("Réinitialiser la progression hebdomadaire ?")) { 
                 appData.current = 0;
-                
-                // On enlève les dates de la semaine en cours pour le calendrier
                 const currentWeek = getWeekNumber(new Date());
                 appData.sessionDates = appData.sessionDates.filter(d => getWeekNumber(new Date(d)) !== currentWeek);
-                
                 saveData(); 
                 alert("Progression hebdomadaire effacée.");
                 goToScreen('screen-sport-type'); 
             }
         }
-
         function deleteAllData() {
             if(confirm("Êtes-vous sûr ? En continuant, toutes les données seront supprimées.")) {
                 localStorage.removeItem(storageKey);
@@ -787,18 +689,21 @@
             locationName: '',
             locationAddress: '',
             cityOnly: '',
+            date: '',
             startTime: '',
             endTime: ''
         };
         let map, marker;
 
         function goToScreen(screenId) {
+            const menu = document.getElementById('side-menu');
+            const overlay = document.getElementById('side-menu-overlay');
+            menu.classList.remove('active');
+            overlay.classList.remove('active');
+
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
-            
-            if (screenId === 'screen-location') {
-                 updateLocationUI();
-            }
+            if (screenId === 'screen-location') updateLocationUI();
         }
 
         function updateLocationUI() {
@@ -817,11 +722,8 @@
                 runningBlock.classList.add('hidden');
                 title.innerText = "Recherche Basic-Fit...";
                 title.classList.remove('hidden');
-                
                 if(!map) setTimeout(initMap, 100);
-                else { 
-                    setTimeout(() => { map.invalidateSize(); locateUser(); }, 300);
-                }
+                else setTimeout(() => { map.invalidateSize(); locateUser(); }, 300);
             } else {
                 muscuBlock.classList.add('hidden');
                 runningBlock.classList.remove('hidden');
@@ -839,23 +741,19 @@
             state.sportType = type;
             state.locationName = '';
             state.locationAddress = '';
-            
             if (type === 'muscu') goToScreen('screen-muscu-type');
             if (type === 'running') goToScreen('screen-running-km');
         }
-
         function selectRoutine(routine) { state.routine = routine; goToScreen('screen-location'); }
         function showManualRoutineInput() { document.getElementById('manual-routine-container').classList.remove('hidden'); }
         function submitManualRoutine() {
             const val = document.getElementById('manual-routine-input').value;
             if (val) { state.routine = val + ' 📝'; goToScreen('screen-location'); }
         }
-
         function submitRunningKm() {
             const km = document.getElementById('running-km-input').value;
             if(!km) return alert("Indiquez les km");
             state.runKm = km;
-            // state.routine is set in goToRecap for running
             goToScreen('screen-location');
         }
 
@@ -867,47 +765,29 @@
             locateUser();
         }
 
-        // Logic for Muscu
         function locateUser() {
-            const pinIcon = L.divIcon({
-                className: 'custom-div-icon',
-                html: "<div style='background-color:#33FF14;width:18px;height:18px;border-radius:50%;border:3px solid white;box-shadow:0 0 15px #33FF14'></div>",
-                iconSize: [20, 20], iconAnchor: [10, 10]
-            });
-
+            const pinIcon = L.divIcon({ className: 'custom-div-icon', html: "<div style='background-color:#33FF14;width:18px;height:18px;border-radius:50%;border:3px solid white;box-shadow:0 0 15px #33FF14'></div>", iconSize: [20, 20], iconAnchor: [10, 10] });
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(async (position) => {
                     const lat = position.coords.latitude;
                     const lon = position.coords.longitude;
-                    
                     map.setView([lat, lon], 15);
                     if (marker) map.removeLayer(marker);
                     marker = L.marker([lat, lon], {icon: pinIcon}).addTo(map);
-
                     try {
                         const cityRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
                         const cityData = await cityRes.json();
-                        
-                        // Récupération précise adresse pour fallback
                         const addr = cityData.address;
                         const street = addr.road || "";
                         const number = addr.house_number || "";
                         const city = addr.city || addr.town || addr.village || "Ville inconnue";
-                        
-                        // Format "Basic Fit + Adresse récupérée" (Si pas de match overpass)
                         const fullAddress = `${number} ${street}, ${city}`.trim();
                         const fallbackName = `Basic-Fit ${fullAddress}`;
-
                         document.getElementById('location-title').innerText = "Recherche Basic-Fit...";
                         document.getElementById('location-input').value = fallbackName;
                         state.locationName = fallbackName; 
-                        
                         findBasicFit(lat, lon, fallbackName); 
-
-                    } catch (e) {
-                        enableManualLocation();
-                    }
-
+                    } catch (e) { enableManualLocation(); }
                 }, () => { enableManualLocation(); });
             } else { enableManualLocation(); }
         }
@@ -917,27 +797,18 @@
                 const query = `[out:json];node["name"~"Basic[- ]?Fit",i](around:10000,${lat},${lon});out;`;
                 const res = await fetch('https://overpass-api.de/api/interpreter', { method: 'POST', body: query });
                 const data = await res.json();
-
                 if (data.elements && data.elements.length > 0) {
                     const place = data.elements[0];
-                    // Si on trouve un club officiel
                     const name = place.tags.name || fallbackName;
-                    
                     document.getElementById('location-title').innerText = "Club trouvé !";
                     document.getElementById('location-input').value = name; 
                     state.locationName = name;
-                    
                     marker.setLatLng([place.lat, place.lon]);
                     map.setView([place.lat, place.lon], 16);
-                } else {
-                    document.getElementById('location-title').innerText = "Club non détecté, adresse utilisée";
-                }
-            } catch (e) {
-                console.log("Overpass failed, using fallback");
-            }
+                } else { document.getElementById('location-title').innerText = "Club non détecté, adresse utilisée"; }
+            } catch (e) { console.log("Overpass failed"); }
         }
 
-        // Logic for Running
         function locateRunningCity() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(async (position) => {
@@ -947,33 +818,23 @@
                         const cityRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
                         const cityData = await cityRes.json();
                         const city = cityData.address.city || cityData.address.town || cityData.address.village || "Inconnue";
-                        
                         document.getElementById('running-city-text').innerText = city;
                         state.cityOnly = city;
-                        state.locationName = city; // Pour usage interne
-                    } catch (e) {
-                        document.getElementById('running-city-text').innerText = "Non trouvé";
-                    }
-                }, () => { 
-                    document.getElementById('running-city-text').innerText = "Erreur GPS"; 
-                });
-            } else {
-                document.getElementById('running-city-text').innerText = "GPS Inactif";
-            }
+                        state.locationName = city; 
+                    } catch (e) { document.getElementById('running-city-text').innerText = "Non trouvé"; }
+                }, () => { document.getElementById('running-city-text').innerText = "Erreur GPS"; });
+            } else { document.getElementById('running-city-text').innerText = "GPS Inactif"; }
         }
 
         function enableManualLocation() {
             if(state.sportType === 'muscu') {
                 const input = document.getElementById('location-input');
-                input.value = "";
-                input.placeholder = "Saisir le lieu...";
-                input.focus();
+                input.value = ""; input.placeholder = "Saisir le lieu..."; input.focus();
                 document.getElementById('location-title').innerText = "Lieu de la séance";
             } else {
                 document.getElementById('running-city-text').parentElement.classList.add('hidden');
                 const manualInput = document.getElementById('running-manual-input');
-                manualInput.classList.remove('hidden');
-                manualInput.focus();
+                manualInput.classList.remove('hidden'); manualInput.focus();
             }
         }
 
@@ -985,8 +846,7 @@
             } else {
                 const manualInput = document.getElementById('running-manual-input');
                 if(!manualInput.classList.contains('hidden') && manualInput.value) {
-                    val = manualInput.value;
-                    state.cityOnly = val;
+                    val = manualInput.value; state.cityOnly = val;
                 } else {
                     val = document.getElementById('running-city-text').innerText;
                     if(val === "Recherche..." || val === "Erreur GPS") val = "";
@@ -994,81 +854,100 @@
                 }
                 state.locationName = val; 
             }
-
             if (!val) return alert("Indiquez un lieu");
-            calculateTimes();
+            prepareTimeScreen();
         }
 
-        function calculateTimes() {
+        // --- TIME HANDLING ---
+        function prepareTimeScreen() {
             const now = new Date();
             const pad = (n) => n < 10 ? '0' + n : n;
             const startStr = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+            const dateStr = now.toISOString().split('T')[0]; 
             
+            document.getElementById('session-date').value = dateStr;
+            document.getElementById('start-time').value = startStr;
+
             let endStr;
             if(state.sportType === 'running') {
                 const durationMinutes = state.runKm * 6;
                 const endTime = new Date(now.getTime() + durationMinutes * 60000);
                 endStr = `${pad(endTime.getHours())}:${pad(endTime.getMinutes())}`;
-                state.startTime = startStr;
-                state.endTime = endStr;
-                goToRecap();
             } else {
                 const nextHour = new Date(now.getTime() + 60*60*1000);
                 endStr = `${pad(nextHour.getHours())}:${pad(nextHour.getMinutes())}`;
-                document.getElementById('start-time').value = startStr;
-                document.getElementById('end-time').value = endStr;
-                goToScreen('screen-time');
             }
+            document.getElementById('end-time').value = endStr;
+            goToScreen('screen-time');
         }
 
-        // --- RECAP & ICS & SAVE ---
         function goToRecap() {
-            if(state.sportType === 'muscu') {
-                state.startTime = document.getElementById('start-time').value;
-                state.endTime = document.getElementById('end-time').value;
-            }
+            state.date = document.getElementById('session-date').value;
+            state.startTime = document.getElementById('start-time').value;
+            state.endTime = document.getElementById('end-time').value;
 
             if(state.sportType === 'muscu') {
                 document.getElementById('recap-desc').innerText = `Séance ${state.routine}`;
                 document.getElementById('recap-location').innerText = state.locationName;
             } else {
-                // RUNNING RECAP
                 document.getElementById('recap-desc').innerText = "Séance running 🏃‍♂️";
                 document.getElementById('recap-location').innerText = `${state.runKm}km à proximité de ${state.cityOnly}`;
             }
-            
-            document.getElementById('recap-time').innerText = `${state.startTime} - ${state.endTime}`;
+            document.getElementById('recap-time').innerText = `${formatDateFR(state.date)} - ${state.startTime} à ${state.endTime}`;
             goToScreen('screen-recap');
         }
 
-        function generateICS() {
-            // Update Stats
-            appData.current += 1; 
-            if(state.sportType === 'muscu') appData.totalMuscu = (appData.totalMuscu || 0) + 1;
-            else appData.totalRunning = (appData.totalRunning || 0) + 1;
+        function calculateDuration(start, end) {
+            const [h1, m1] = start.split(':').map(Number);
+            const [h2, m2] = end.split(':').map(Number);
+            let diff = (h2 * 60 + m2) - (h1 * 60 + m1);
+            if(diff < 0) diff += 24*60;
+            const h = Math.floor(diff / 60);
+            const m = diff % 60;
+            return `${h}h${m < 10 ? '0'+m : m}`;
+        }
 
-            const todayISO = new Date().toISOString().split('T')[0];
-            if(!appData.sessionDates.includes(todayISO)) appData.sessionDates.push(todayISO);
+        function generateICS() {
+            appData.current += 1; 
+            let emoji = '💪';
+            let desc = '';
+            
+            if(state.sportType === 'muscu') {
+                appData.totalMuscu = (appData.totalMuscu || 0) + 1;
+                emoji = '💪'; desc = `Muscu: ${state.routine}`;
+            } else {
+                appData.totalRunning = (appData.totalRunning || 0) + 1;
+                emoji = '🏃‍♂️'; desc = `Running: ${state.runKm}km`;
+            }
+
+            const duration = calculateDuration(state.startTime, state.endTime);
+            appData.history.push({
+                type: state.sportType,
+                emoji: emoji,
+                desc: desc,
+                date: state.date,
+                startTime: state.startTime,
+                duration: duration
+            });
+
+            if(!appData.sessionDates.includes(state.date)) appData.sessionDates.push(state.date);
             saveData(); 
 
-            // ICS
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = (now.getMonth() + 1).toString().padStart(2, '0');
-            const day = now.getDate().toString().padStart(2, '0');
+            const [y, m, d] = state.date.split('-'); 
             const [sh, sm] = state.startTime.split(':');
             const [eh, em] = state.endTime.split(':');
-            const dtStart = `${year}${month}${day}T${sh}${sm}00`;
-            const dtEnd = `${year}${month}${day}T${eh}${em}00`;
+            
+            const dtStart = `${y}${m}${d}T${sh}${sm}00`;
+            const dtEnd = `${y}${m}${d}T${eh}${em}00`;
 
-            let summary = "Séance de sport"; // Default muscu
+            let summary = "Séance de sport";
             let description = "";
             let location = state.locationName;
 
             if(state.sportType === 'muscu') {
                 description = `Séance ${state.routine} au ${state.locationName}`;
             } else {
-                summary = "Séance running 🏃‍♂️"; // Specific Running Title
+                summary = "Séance running 🏃‍♂️";
                 description = `${state.runKm}km à proximité de ${state.cityOnly}`;
                 location = state.cityOnly;
             }
