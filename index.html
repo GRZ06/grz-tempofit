@@ -560,7 +560,6 @@
             if(!appData.history || appData.history.length === 0) {
                 list.innerHTML = '<div class="empty-history">Aucune séance enregistrée</div>';
             } else {
-                // Boucle inversée pour afficher les plus récents en haut, mais on garde l'index réel 'i'
                 for (let i = appData.history.length - 1; i >= 0; i--) {
                     const session = appData.history[i];
                     const el = document.createElement('div');
@@ -585,16 +584,11 @@
         function deleteHistoryItem(index) {
             if(confirm("Supprimer cette séance de l'historique ?")) {
                 const item = appData.history[index];
-                
-                // Update stats counter
                 if(item.type === 'muscu' && appData.totalMuscu > 0) appData.totalMuscu--;
                 if(item.type === 'running' && appData.totalRunning > 0) appData.totalRunning--;
-                
-                // Remove from history
                 appData.history.splice(index, 1);
-                
                 saveData();
-                openHistory(); // Refresh view
+                openHistory(); 
             }
         }
 
@@ -907,10 +901,10 @@
             return `${h}h${m < 10 ? '0'+m : m}`;
         }
 
-        function generateICS() {
+        async function generateICS() {
+            // Mise à jour des stats et historique (idem avant)
             appData.current += 1; 
-            let emoji = '💪';
-            let desc = '';
+            let emoji = '💪'; let desc = '';
             
             if(state.sportType === 'muscu') {
                 appData.totalMuscu = (appData.totalMuscu || 0) + 1;
@@ -923,20 +917,17 @@
             const duration = calculateDuration(state.startTime, state.endTime);
             appData.history.push({
                 type: state.sportType,
-                emoji: emoji,
-                desc: desc,
-                date: state.date,
-                startTime: state.startTime,
-                duration: duration
+                emoji: emoji, desc: desc, date: state.date,
+                startTime: state.startTime, duration: duration
             });
 
             if(!appData.sessionDates.includes(state.date)) appData.sessionDates.push(state.date);
             saveData(); 
 
+            // Génération contenu ICS
             const [y, m, d] = state.date.split('-'); 
             const [sh, sm] = state.startTime.split(':');
             const [eh, em] = state.endTime.split(':');
-            
             const dtStart = `${y}${m}${d}T${sh}${sm}00`;
             const dtEnd = `${y}${m}${d}T${eh}${em}00`;
 
@@ -944,13 +935,8 @@
             let description = "";
             let location = state.locationName;
 
-            if(state.sportType === 'muscu') {
-                description = `Séance ${state.routine} au ${state.locationName}`;
-            } else {
-                summary = "Séance running 🏃‍♂️";
-                description = `${state.runKm}km à proximité de ${state.cityOnly}`;
-                location = state.cityOnly;
-            }
+            if(state.sportType === 'muscu') description = `Séance ${state.routine} au ${state.locationName}`;
+            else { summary = "Séance running 🏃‍♂️"; description = `${state.runKm}km à proximité de ${state.cityOnly}`; location = state.cityOnly; }
 
             const icsContent = [
                 'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//GRZTempoFit//FR',
@@ -961,18 +947,37 @@
                 'END:VEVENT', 'END:VCALENDAR'
             ].join('\r\n');
 
-            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-            const link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            link.setAttribute('download', 'seance.ics');
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            setTimeout(() => {
-                alert("Séance enregistrée !");
-                goToScreen('screen-sport-type');
-            }, 1000);
+            // --- NOUVELLE LOGIQUE POUR IOS PWA (SHARE API) ---
+            const file = new File([icsContent], 'seance.ics', { type: 'text/calendar' });
+
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                try {
+                    await navigator.share({
+                        files: [file],
+                        title: 'Ajouter au calendrier',
+                        text: 'Séance de sport'
+                    });
+                    // On attend que l'utilisateur ait fini de partager
+                    alert("Séance enregistrée !");
+                    goToScreen('screen-sport-type');
+                } catch (err) {
+                    console.log("Partage annulé ou échoué", err);
+                }
+            } else {
+                // Fallback PC/Android classique
+                const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+                const link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.setAttribute('download', 'seance.ics');
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                setTimeout(() => {
+                    alert("Séance enregistrée !");
+                    goToScreen('screen-sport-type');
+                }, 1000);
+            }
         }
 
         window.onload = loadData;
