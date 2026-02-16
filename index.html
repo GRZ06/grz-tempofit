@@ -24,257 +24,78 @@
             --danger: #FF453A;
         }
 
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
-            margin: 0;
-            padding: 20px 20px 40px 20px;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
+            margin: 0; padding: 20px 20px 40px 20px;
+            height: 100vh; display: flex; flex-direction: column; overflow-x: hidden;
         }
 
         /* --- HEADER & HAMBURGER --- */
-        .app-header-container {
-            position: relative;
-            margin-bottom: 5px;
-            padding-top: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .hamburger-btn {
-            position: absolute;
-            top: 10px;
-            left: 0;
-            background: none;
-            border: none;
-            padding: 5px;
-            cursor: pointer;
-            z-index: 2000;
-        }
-
-        .hamburger-icon {
-            width: 30px;
-            height: 30px;
-            fill: var(--neon-green);
-        }
+        .app-header-container { position: relative; margin-bottom: 5px; padding-top: 10px; display: flex; justify-content: center; align-items: center; }
+        .hamburger-btn { position: absolute; top: 10px; left: 0; background: none; border: none; padding: 5px; cursor: pointer; z-index: 2000; }
+        .hamburger-icon { width: 30px; height: 30px; fill: var(--neon-green); }
 
         /* SIDE MENU */
-        .side-menu-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 1500;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-        }
-        .side-menu-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .side-menu {
-            position: fixed;
-            top: 0;
-            left: -280px;
-            width: 260px;
-            height: 100%;
-            background-color: var(--card-bg);
-            border-right: 1px solid #333;
-            z-index: 1600;
-            transition: left 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-            display: flex;
-            flex-direction: column;
-            padding-top: 80px;
-        }
+        .side-menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1500; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .side-menu-overlay.active { opacity: 1; pointer-events: auto; }
+        .side-menu { position: fixed; top: 0; left: -280px; width: 260px; height: 100%; background-color: var(--card-bg); border-right: 1px solid #333; z-index: 1600; transition: left 0.3s cubic-bezier(0.4, 0.0, 0.2, 1); display: flex; flex-direction: column; padding-top: 80px; }
         .side-menu.active { left: 0; }
+        .side-menu a { padding: 20px 25px; text-decoration: none; color: white; font-size: 1.2rem; font-weight: 600; border-bottom: 1px solid var(--separator); transition: background 0.2s; }
+        .side-menu a:active { background-color: #333; color: var(--neon-green); }
 
-        .side-menu a {
-            padding: 20px 25px;
-            text-decoration: none;
-            color: white;
-            font-size: 1.2rem;
-            font-weight: 600;
-            border-bottom: 1px solid var(--separator);
-            transition: background 0.2s;
-        }
-        .side-menu a:active {
-            background-color: #333;
-            color: var(--neon-green);
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            background: linear-gradient(90deg, #fff, #ddd);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-style: italic;
-            text-align: center;
-            display: block;
-        }
-        
-        .logo span {
-            color: var(--neon-green);
-            -webkit-text-fill-color: var(--neon-green);
-        }
+        .logo { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.5px; background: linear-gradient(90deg, #fff, #ddd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-style: italic; text-align: center; display: block; }
+        .logo span { color: var(--neon-green); -webkit-text-fill-color: var(--neon-green); }
 
         /* --- PIXEL ART --- */
-        .pixel-art-container {
-            text-align: center;
-            margin-bottom: 25px;
-            height: 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .pixel-svg {
-            width: 60px;
-            height: 60px;
-            image-rendering: pixelated; 
-            animation: breathe 2s infinite ease-in-out;
-        }
-        
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
+        .pixel-art-container { text-align: center; margin-bottom: 25px; height: 60px; display: flex; justify-content: center; align-items: center; }
+        .pixel-svg { width: 60px; height: 60px; image-rendering: pixelated; animation: breathe 2s infinite ease-in-out; }
+        @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
 
         /* --- COMMON UI --- */
-        .screen {
-            display: none;
-            flex-direction: column;
-            gap: 12px;
-            animation: fadeIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-            flex: 1;
-        }
+        .screen { display: none; flex-direction: column; gap: 12px; animation: fadeIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); flex: 1; }
         .screen.active { display: flex; }
 
-        .option-btn {
-            background-color: var(--card-bg);
-            border: none;
-            color: var(--text-color);
-            padding: 18px 20px;
-            border-radius: 14px;
-            font-size: 17px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            text-align: left;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        .option-btn { background-color: var(--card-bg); border: none; color: var(--text-color); padding: 18px 20px; border-radius: 14px; font-size: 17px; font-weight: 500; cursor: pointer; transition: background-color 0.2s; text-align: left; display: flex; justify-content: space-between; align-items: center; }
         .option-btn:active { background-color: #333; }
         .option-btn span { font-size: 1.4rem; }
 
-        input[type="text"], input[type="number"], input[type="date"], input[type="time"] {
-            background-color: var(--card-bg);
-            border: none;
-            color: white;
-            padding: 16px;
-            border-radius: 12px;
-            font-size: 17px;
-            width: 100%;
-            outline: none;
-            font-family: -apple-system, sans-serif;
-        }
-        
-        input[type="date"], input[type="time"] {
-            appearance: none;
-            -webkit-appearance: none;
-            display: block;
-        }
-
+        input { background-color: var(--card-bg); border: none; color: white; padding: 16px; border-radius: 12px; font-size: 17px; width: 100%; outline: none; font-family: -apple-system, sans-serif; }
+        input[type="date"], input[type="time"] { appearance: none; -webkit-appearance: none; display: block; }
         input:focus { box-shadow: 0 0 0 2px var(--neon-green); }
 
-        .time-input-container {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
+        .time-input-container { background-color: var(--card-bg); border-radius: 12px; padding: 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
         .time-input-container span { font-size: 17px; color: white; }
         .time-input-container input { background: transparent; text-align: right; width: 60%; padding: 0; font-weight: 600; color: var(--neon-green); }
 
-        /* --- HISTORY LIST --- */
-        .history-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            overflow-y: auto;
-            max-height: 70vh;
-        }
-
-        .history-item {
-            background-color: var(--card-bg);
-            border-radius: 14px;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .h-left {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-width: 60px;
-            border-right: 1px solid #333;
-            padding-right: 10px;
-            margin-right: 15px;
-        }
-
+        /* --- HISTORY --- */
+        .history-list { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; max-height: 60vh; }
+        .history-item { background-color: var(--card-bg); border-radius: 14px; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .h-left { display: flex; flex-direction: column; align-items: center; min-width: 60px; border-right: 1px solid #333; padding-right: 10px; margin-right: 15px; }
         .h-emoji { font-size: 24px; margin-bottom: 4px; }
         .h-duration { font-size: 12px; color: var(--text-secondary); font-weight: 600; }
-
-        .h-right {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
+        .h-right { flex: 1; display: flex; flex-direction: column; justify-content: center; }
         .h-type { font-size: 15px; font-weight: 600; color: white; margin-bottom: 4px; }
         .h-date { font-size: 13px; color: var(--neon-green); }
+        .delete-btn-small { background: none; border: none; color: var(--danger); font-size: 16px; padding: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .empty-history { text-align: center; color: var(--text-secondary); margin-top: 40px; font-style: italic; }
 
-        /* Delete Button */
-        .delete-btn-small {
-            background: none;
-            border: none;
-            color: var(--danger);
-            font-size: 16px;
-            padding: 10px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        .csv-actions { display: flex; gap: 10px; margin-top: 10px; }
+        .btn-small { flex: 1; padding: 12px; font-size: 14px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; }
+        .btn-csv-export { background-color: #333; color: white; }
+        .btn-csv-import { background-color: var(--card-bg); border: 1px dashed var(--text-secondary); color: var(--text-secondary); }
 
-        .empty-history {
-            text-align: center;
-            color: var(--text-secondary);
-            margin-top: 40px;
-            font-style: italic;
-        }
+        /* --- MONTHLY CALENDAR --- */
+        .month-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 20px; }
+        .month-cell { aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 8px; background-color: var(--card-bg); font-size: 14px; position: relative; }
+        .month-cell.empty { background: transparent; }
+        .month-day-num { z-index: 2; }
+        .month-dot { width: 6px; height: 6px; border-radius: 50%; background-color: var(--neon-green); margin-top: 4px; display: none; box-shadow: 0 0 5px var(--neon-green); }
+        .month-cell.has-session .month-dot { display: block; }
+        .month-header { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; margin-bottom: 10px; color: var(--text-secondary); font-size: 12px; font-weight: 700; }
 
         /* --- STATS & PROG --- */
         .progression-container { background-color: var(--card-bg); border-radius: 14px; padding: 15px; margin-top: 25px; text-align: center; border: 1px solid #333; }
@@ -312,7 +133,6 @@
         /* MAP */
         #map { height: 250px; width: 100%; border-radius: 14px; margin-bottom: 10px; z-index: 1; }
         .hidden { display: none !important; }
-        
         .city-display-container { text-align: center; margin-top: 30px; margin-bottom: 30px; }
         .city-label { font-size: 1.1rem; color: var(--text-color); margin-bottom: 10px; }
         .city-name { font-size: 2.5rem; font-weight: 800; color: var(--neon-green); text-transform: capitalize; text-shadow: 0 0 15px rgba(51, 255, 20, 0.3); line-height: 1.1; }
@@ -333,6 +153,7 @@
     <div id="side-menu" class="side-menu">
         <a href="#" onclick="goToScreen('screen-sport-type'); toggleMenu()">Accueil 🏠</a>
         <a href="#" onclick="openHistory(); toggleMenu()">Historique 📜</a>
+        <a href="#" onclick="openCalendar(); toggleMenu()">Calendrier 🗓️</a>
         <a href="#" onclick="openSettings(); toggleMenu()">Paramètres ⚙️</a>
     </div>
 
@@ -382,8 +203,24 @@
 
     <div id="screen-history" class="screen">
         <h2>Historique des séances</h2>
-        <div id="history-list" class="history-list">
-            </div>
+        <div class="csv-actions">
+            <button class="btn-small btn-csv-export" onclick="exportCSV()">Exporter CSV 📤</button>
+            <button class="btn-small btn-csv-import" onclick="triggerImport()">Importer CSV 📥</button>
+            <input type="file" id="csv-file-input" accept=".csv" class="hidden" onchange="importCSV(this)">
+        </div>
+        <br>
+        <div id="history-list" class="history-list"></div>
+        <div class="actions">
+            <button class="btn-back" onclick="goToScreen('screen-sport-type')">Retour</button>
+        </div>
+    </div>
+
+    <div id="screen-calendar" class="screen">
+        <h2 id="calendar-month-title">Mois</h2>
+        <div class="month-header">
+            <div>L</div><div>M</div><div>M</div><div>J</div><div>V</div><div>S</div><div>D</div>
+        </div>
+        <div id="month-grid" class="month-grid"></div>
         <div class="actions">
             <button class="btn-back" onclick="goToScreen('screen-sport-type')">Retour</button>
         </div>
@@ -493,17 +330,12 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
-        // --- DATA & PERSISTENCE ---
         const storageKey = 'grz_tempofit_v3_data';
         
         let appData = { 
-            goal: 0, 
-            current: 0, 
-            lastWeek: 0,
-            totalMuscu: 0,
-            totalRunning: 0,
-            sessionDates: [],
-            history: [] 
+            goal: 0, current: 0, lastWeek: 0, 
+            totalMuscu: 0, totalRunning: 0, 
+            sessionDates: [], history: [] 
         };
 
         function getWeekNumber(d) {
@@ -521,39 +353,28 @@
                 appData = { ...appData, ...parsed }; 
                 if(!appData.history) appData.history = []; 
                 if (appData.lastWeek !== currentWeek) {
-                    appData.current = 0; 
-                    appData.lastWeek = currentWeek;
-                    saveData();
+                    appData.current = 0; appData.lastWeek = currentWeek; saveData();
                 }
             } else {
-                appData.lastWeek = currentWeek;
-                saveData();
+                appData.lastWeek = currentWeek; saveData();
             }
-            renderProgression();
-            renderStats();
-            renderCalendar();
+            renderProgression(); renderStats(); renderCalendar();
         }
 
         function saveData(data) {
             appData = data || appData;
             localStorage.setItem(storageKey, JSON.stringify(appData));
-            renderProgression();
-            renderStats();
-            renderCalendar();
+            renderProgression(); renderStats(); renderCalendar();
         }
 
-        // --- MENU ---
         function toggleMenu() {
             const menu = document.getElementById('side-menu');
             const overlay = document.getElementById('side-menu-overlay');
-            if (menu.classList.contains('active')) {
-                menu.classList.remove('active'); overlay.classList.remove('active');
-            } else {
-                menu.classList.add('active'); overlay.classList.add('active');
-            }
+            if (menu.classList.contains('active')) { menu.classList.remove('active'); overlay.classList.remove('active'); } 
+            else { menu.classList.add('active'); overlay.classList.add('active'); }
         }
 
-        // --- HISTORY ---
+        // --- HISTORY & CSV ---
         function openHistory() {
             const list = document.getElementById('history-list');
             list.innerHTML = '';
@@ -582,20 +403,121 @@
         }
 
         function deleteHistoryItem(index) {
-            if(confirm("Supprimer cette séance de l'historique ?")) {
+            if(confirm("Supprimer cette séance ?")) {
                 const item = appData.history[index];
                 if(item.type === 'muscu' && appData.totalMuscu > 0) appData.totalMuscu--;
                 if(item.type === 'running' && appData.totalRunning > 0) appData.totalRunning--;
+                
                 appData.history.splice(index, 1);
+                
+                // REBUILD DATES from remaining history
+                appData.sessionDates = appData.history.map(h => h.date);
+                // Remove duplicates
+                appData.sessionDates = [...new Set(appData.sessionDates)];
+
                 saveData();
                 openHistory(); 
             }
+        }
+
+        function exportCSV() {
+            if(appData.history.length === 0) return alert("Aucune donnée à exporter.");
+            let csvContent = "data:text/csv;charset=utf-8,Type,Description,Date,Heure,Duree\n";
+            appData.history.forEach(row => {
+                csvContent += `${row.type},"${row.desc}",${row.date},${row.startTime},${row.duration}\n`;
+            });
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "grz_tempofit_export.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function triggerImport() { document.getElementById('csv-file-input').click(); }
+
+        function importCSV(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const text = e.target.result;
+                const lines = text.split('\n');
+                let count = 0;
+                
+                // Skip header
+                for(let i=1; i<lines.length; i++) {
+                    if(lines[i].trim() === "") continue;
+                    // Basic parse assuming correct format
+                    const cols = lines[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || lines[i].split(',');
+                    if(cols.length >= 5) {
+                        const type = cols[0];
+                        const desc = cols[1].replace(/"/g, '');
+                        const date = cols[2];
+                        const time = cols[3];
+                        const duration = cols[4];
+                        const emoji = type === 'muscu' ? '💪' : '🏃‍♂️';
+                        
+                        appData.history.push({ type, emoji, desc, date, startTime: time, duration });
+                        if(!appData.sessionDates.includes(date)) appData.sessionDates.push(date);
+                        if(type === 'muscu') appData.totalMuscu++;
+                        else appData.totalRunning++;
+                        count++;
+                    }
+                }
+                saveData();
+                alert(`${count} séances importées !`);
+                openHistory();
+            };
+            reader.readAsText(file);
         }
 
         function formatDateFR(dateStr) {
             if(!dateStr) return "";
             const [y, m, d] = dateStr.split('-');
             return `${d}/${m}`;
+        }
+
+        // --- MONTH CALENDAR ---
+        function openCalendar() {
+            const grid = document.getElementById('month-grid');
+            const title = document.getElementById('calendar-month-title');
+            grid.innerHTML = '';
+            
+            const now = new Date();
+            const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+            title.innerText = `${monthNames[now.getMonth()]} ${now.getFullYear()}`;
+
+            const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+            // 0=Sun, 1=Mon. Adjust to Mon=0
+            let firstDayIndex = new Date(now.getFullYear(), now.getMonth(), 1).getDay();
+            firstDayIndex = (firstDayIndex === 0) ? 6 : firstDayIndex - 1;
+
+            // Empty slots
+            for(let i=0; i<firstDayIndex; i++) {
+                const d = document.createElement('div');
+                d.className = 'month-cell empty';
+                grid.appendChild(d);
+            }
+
+            // Days
+            for(let i=1; i<=daysInMonth; i++) {
+                const d = document.createElement('div');
+                d.className = 'month-cell';
+                
+                // Check if session exists
+                // Format YYYY-MM-DD local
+                const currentMonth = (now.getMonth() + 1).toString().padStart(2, '0');
+                const currentDay = i.toString().padStart(2, '0');
+                const isoDate = `${now.getFullYear()}-${currentMonth}-${currentDay}`;
+                
+                if(appData.sessionDates.includes(isoDate)) d.classList.add('has-session');
+
+                d.innerHTML = `<span class="month-day-num">${i}</span><div class="month-dot"></div>`;
+                grid.appendChild(d);
+            }
+            goToScreen('screen-calendar');
         }
 
         // --- RENDER ---
@@ -677,24 +599,16 @@
 
         // --- STATE & NAV ---
         const state = {
-            sportType: '',
-            routine: '',
-            runKm: 0,
-            locationName: '',
-            locationAddress: '',
-            cityOnly: '',
-            date: '',
-            startTime: '',
-            endTime: ''
+            sportType: '', routine: '', runKm: 0,
+            locationName: '', cityOnly: '',
+            date: '', startTime: '', endTime: ''
         };
         let map, marker;
 
         function goToScreen(screenId) {
             const menu = document.getElementById('side-menu');
             const overlay = document.getElementById('side-menu-overlay');
-            menu.classList.remove('active');
-            overlay.classList.remove('active');
-
+            menu.classList.remove('active'); overlay.classList.remove('active');
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
             if (screenId === 'screen-location') updateLocationUI();
@@ -706,23 +620,16 @@
             document.getElementById('running-manual-input').value = "";
             document.getElementById('running-manual-input').classList.add('hidden');
             document.getElementById('running-city-text').parentElement.classList.remove('hidden');
-
             const muscuBlock = document.getElementById('muscu-location-container');
             const runningBlock = document.getElementById('running-location-container');
             const title = document.getElementById('location-title');
-
             if(state.sportType === 'muscu') {
-                muscuBlock.classList.remove('hidden');
-                runningBlock.classList.add('hidden');
-                title.innerText = "Recherche Basic-Fit...";
-                title.classList.remove('hidden');
-                if(!map) setTimeout(initMap, 100);
-                else setTimeout(() => { map.invalidateSize(); locateUser(); }, 300);
+                muscuBlock.classList.remove('hidden'); runningBlock.classList.add('hidden');
+                title.innerText = "Recherche Basic-Fit..."; title.classList.remove('hidden');
+                if(!map) setTimeout(initMap, 100); else setTimeout(() => { map.invalidateSize(); locateUser(); }, 300);
             } else {
-                muscuBlock.classList.add('hidden');
-                runningBlock.classList.remove('hidden');
-                title.classList.add('hidden');
-                locateRunningCity();
+                muscuBlock.classList.add('hidden'); runningBlock.classList.remove('hidden');
+                title.classList.add('hidden'); locateRunningCity();
             }
         }
 
@@ -732,9 +639,7 @@
         }
 
         function selectSport(type) {
-            state.sportType = type;
-            state.locationName = '';
-            state.locationAddress = '';
+            state.sportType = type; state.locationName = ''; state.cityOnly = '';
             if (type === 'muscu') goToScreen('screen-muscu-type');
             if (type === 'running') goToScreen('screen-running-km');
         }
@@ -751,7 +656,6 @@
             goToScreen('screen-location');
         }
 
-        // --- MAP & LOCATION LOGIC ---
         function initMap() {
             if(map) return;
             map = L.map('map', { zoomControl: false }).setView([46.603354, 1.888334], 6);
@@ -763,8 +667,7 @@
             const pinIcon = L.divIcon({ className: 'custom-div-icon', html: "<div style='background-color:#33FF14;width:18px;height:18px;border-radius:50%;border:3px solid white;box-shadow:0 0 15px #33FF14'></div>", iconSize: [20, 20], iconAnchor: [10, 10] });
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(async (position) => {
-                    const lat = position.coords.latitude;
-                    const lon = position.coords.longitude;
+                    const lat = position.coords.latitude; const lon = position.coords.longitude;
                     map.setView([lat, lon], 15);
                     if (marker) map.removeLayer(marker);
                     marker = L.marker([lat, lon], {icon: pinIcon}).addTo(map);
@@ -772,9 +675,7 @@
                         const cityRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
                         const cityData = await cityRes.json();
                         const addr = cityData.address;
-                        const street = addr.road || "";
-                        const number = addr.house_number || "";
-                        const city = addr.city || addr.town || addr.village || "Ville inconnue";
+                        const street = addr.road || ""; const number = addr.house_number || ""; const city = addr.city || addr.town || "Ville inconnue";
                         const fullAddress = `${number} ${street}, ${city}`.trim();
                         const fallbackName = `Basic-Fit ${fullAddress}`;
                         document.getElementById('location-title').innerText = "Recherche Basic-Fit...";
@@ -806,15 +707,13 @@
         function locateRunningCity() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(async (position) => {
-                    const lat = position.coords.latitude;
-                    const lon = position.coords.longitude;
+                    const lat = position.coords.latitude; const lon = position.coords.longitude;
                     try {
                         const cityRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
                         const cityData = await cityRes.json();
-                        const city = cityData.address.city || cityData.address.town || cityData.address.village || "Inconnue";
+                        const city = cityData.address.city || cityData.address.town || "Inconnue";
                         document.getElementById('running-city-text').innerText = city;
-                        state.cityOnly = city;
-                        state.locationName = city; 
+                        state.cityOnly = city; state.locationName = city; 
                     } catch (e) { document.getElementById('running-city-text').innerText = "Non trouvé"; }
                 }, () => { document.getElementById('running-city-text').innerText = "Erreur GPS"; });
             } else { document.getElementById('running-city-text').innerText = "GPS Inactif"; }
@@ -834,34 +733,24 @@
 
         function confirmLocation() {
             let val;
-            if(state.sportType === 'muscu') {
-                val = document.getElementById('location-input').value;
-                state.locationName = val;
-            } else {
+            if(state.sportType === 'muscu') { val = document.getElementById('location-input').value; state.locationName = val; } 
+            else {
                 const manualInput = document.getElementById('running-manual-input');
-                if(!manualInput.classList.contains('hidden') && manualInput.value) {
-                    val = manualInput.value; state.cityOnly = val;
-                } else {
-                    val = document.getElementById('running-city-text').innerText;
-                    if(val === "Recherche..." || val === "Erreur GPS") val = "";
-                    state.cityOnly = val;
-                }
+                if(!manualInput.classList.contains('hidden') && manualInput.value) { val = manualInput.value; state.cityOnly = val; } 
+                else { val = document.getElementById('running-city-text').innerText; if(val.includes("Recherche") || val.includes("Erreur")) val = ""; state.cityOnly = val; }
                 state.locationName = val; 
             }
             if (!val) return alert("Indiquez un lieu");
             prepareTimeScreen();
         }
 
-        // --- TIME HANDLING ---
         function prepareTimeScreen() {
             const now = new Date();
             const pad = (n) => n < 10 ? '0' + n : n;
             const startStr = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
             const dateStr = now.toISOString().split('T')[0]; 
-            
             document.getElementById('session-date').value = dateStr;
             document.getElementById('start-time').value = startStr;
-
             let endStr;
             if(state.sportType === 'running') {
                 const durationMinutes = state.runKm * 6;
@@ -879,14 +768,8 @@
             state.date = document.getElementById('session-date').value;
             state.startTime = document.getElementById('start-time').value;
             state.endTime = document.getElementById('end-time').value;
-
-            if(state.sportType === 'muscu') {
-                document.getElementById('recap-desc').innerText = `Séance ${state.routine}`;
-                document.getElementById('recap-location').innerText = state.locationName;
-            } else {
-                document.getElementById('recap-desc').innerText = "Séance running 🏃‍♂️";
-                document.getElementById('recap-location').innerText = `${state.runKm}km à proximité de ${state.cityOnly}`;
-            }
+            if(state.sportType === 'muscu') { document.getElementById('recap-desc').innerText = `Séance ${state.routine}`; document.getElementById('recap-location').innerText = state.locationName; } 
+            else { document.getElementById('recap-desc').innerText = "Séance running 🏃‍♂️"; document.getElementById('recap-location').innerText = `${state.runKm}km à proximité de ${state.cityOnly}`; }
             document.getElementById('recap-time').innerText = `${formatDateFR(state.date)} - ${state.startTime} à ${state.endTime}`;
             goToScreen('screen-recap');
         }
@@ -901,40 +784,24 @@
             return `${h}h${m < 10 ? '0'+m : m}`;
         }
 
-        async function generateICS() {
-            // Mise à jour des stats et historique (idem avant)
+        function generateICS() {
             appData.current += 1; 
             let emoji = '💪'; let desc = '';
-            
-            if(state.sportType === 'muscu') {
-                appData.totalMuscu = (appData.totalMuscu || 0) + 1;
-                emoji = '💪'; desc = `Muscu: ${state.routine}`;
-            } else {
-                appData.totalRunning = (appData.totalRunning || 0) + 1;
-                emoji = '🏃‍♂️'; desc = `Running: ${state.runKm}km`;
-            }
+            if(state.sportType === 'muscu') { appData.totalMuscu++; emoji = '💪'; desc = `Muscu: ${state.routine}`; } 
+            else { appData.totalRunning++; emoji = '🏃‍♂️'; desc = `Running: ${state.runKm}km`; }
 
             const duration = calculateDuration(state.startTime, state.endTime);
-            appData.history.push({
-                type: state.sportType,
-                emoji: emoji, desc: desc, date: state.date,
-                startTime: state.startTime, duration: duration
-            });
-
+            appData.history.push({ type: state.sportType, emoji, desc, date: state.date, startTime: state.startTime, duration });
             if(!appData.sessionDates.includes(state.date)) appData.sessionDates.push(state.date);
             saveData(); 
 
-            // Génération contenu ICS
             const [y, m, d] = state.date.split('-'); 
             const [sh, sm] = state.startTime.split(':');
             const [eh, em] = state.endTime.split(':');
             const dtStart = `${y}${m}${d}T${sh}${sm}00`;
             const dtEnd = `${y}${m}${d}T${eh}${em}00`;
 
-            let summary = "Séance de sport";
-            let description = "";
-            let location = state.locationName;
-
+            let summary = "Séance de sport"; let description = ""; let location = state.locationName;
             if(state.sportType === 'muscu') description = `Séance ${state.routine} au ${state.locationName}`;
             else { summary = "Séance running 🏃‍♂️"; description = `${state.runKm}km à proximité de ${state.cityOnly}`; location = state.cityOnly; }
 
@@ -947,37 +814,15 @@
                 'END:VEVENT', 'END:VCALENDAR'
             ].join('\r\n');
 
-            // --- NOUVELLE LOGIQUE POUR IOS PWA (SHARE API) ---
-            const file = new File([icsContent], 'seance.ics', { type: 'text/calendar' });
-
-            if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                try {
-                    await navigator.share({
-                        files: [file],
-                        title: 'Ajouter au calendrier',
-                        text: 'Séance de sport'
-                    });
-                    // On attend que l'utilisateur ait fini de partager
-                    alert("Séance enregistrée !");
-                    goToScreen('screen-sport-type');
-                } catch (err) {
-                    console.log("Partage annulé ou échoué", err);
-                }
-            } else {
-                // Fallback PC/Android classique
-                const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-                const link = document.createElement('a');
-                link.href = window.URL.createObjectURL(blob);
-                link.setAttribute('download', 'seance.ics');
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                setTimeout(() => {
-                    alert("Séance enregistrée !");
-                    goToScreen('screen-sport-type');
-                }, 1000);
-            }
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.setAttribute('download', 'seance.ics');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            setTimeout(() => { alert("Séance enregistrée !"); goToScreen('screen-sport-type'); }, 1000);
         }
 
         window.onload = loadData;
