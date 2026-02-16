@@ -1,20 +1,3 @@
-C'est noté. Je garde **exactement** le même fonctionnement technique (génération ICS, historique, etc.) et je restructure uniquement la partie "Cardio" comme demandé.
-
-Voici les changements apportés :
-
-1. **Menu Principal** : "Séance running" devient **"Séance cardio 🫀"**.
-2. **Nouveau Sous-menu Cardio** : Choix entre "Running 🏃‍♂️" et "Vélo 🚴‍♂️".
-3. **Flux Vélo** :
-* Demande "Extérieur" ou "Intérieur".
-* **Ne demande pas les KM**.
-* Utilise la géolocalisation "Ville" (comme le running).
-* Définit une durée par défaut d'1h (modifiable).
-* Adapte le texte dans l'ICS et l'historique ("Séance vélo d'extérieur à ...").
-
-
-
-Voici le code complet mis à jour :
-
 ```html
 <!DOCTYPE html>
 <html lang="fr">
